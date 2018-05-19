@@ -26,34 +26,12 @@ __version__ = "1.2"
 __email__ = "justrianaco@unal.edu.co"
 __status__ = "Development"
 
+
 import MultiPManager.distProc as man
 import sys
 
-def saltedHash(psw):
-    import hashlib
-    import binascii
-    print("Hashing {}".format(psw))
-    dk = hashlib.pbkdf2_hmac('sha256', psw, 'salt', 100000)
-    return binascii.hexlify(dk)
-
-def GetWords(N):
-    import urllib2
-    word_site = "http://svnweb.freebsd.org/csrg/share/dict/words?view=co&content-type=text/plain"
-    response = urllib2.urlopen(word_site)
-    txt = response.read()
-    WORDS = txt.splitlines()
-    return WORDS[0:N]
-
-class HaltException(Exception): pass
-
 if __name__ == '__main__':
-    try:
-        if len(sys.argv) > 1 and sys.argv[1] == 'producer':
-            man.tlon_parallelize(saltedHash, GetWords(503))
-        else:
-            man.runclient(int(sys.argv[2]))
-        raise HaltException("Somebody stop me!")
-
-    except HaltException as h:
-        print(h)
-        # now what?
+    if len(sys.argv) > 1 and sys.argv[1] == 'producer':
+        man.tlon_parallelize()
+    else:
+        man.runclient()
