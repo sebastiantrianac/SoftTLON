@@ -49,9 +49,9 @@ class HaltException(Exception): pass
 if __name__ == '__main__':
     try:
         if len(sys.argv) > 1 and sys.argv[1] == 'producer':
-            man.tlon_parallelize('172.25.13.15',saltedHash, GetWords(503))
+            man.tlon_parallelize('192.168.65.1',saltedHash, GetWords(503))
         else:
-            man.runclient('172.25.13.15', int(sys.argv[2]))
+            man.runclient('192.168.0.1', int(sys.argv[2]))
         raise HaltException("")
 
     except HaltException as h:
