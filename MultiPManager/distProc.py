@@ -36,6 +36,7 @@ import time
 import managerImp
 import brokermq
 import multiProc
+import socket
 
 IP = '10.203.177.194'
 MANAGER_PORTNUM = 9999
@@ -78,7 +79,9 @@ def tlon_parallelize(ipbroker, f, set):
         manager, shared_job_q, shared_result_q = tlon_sharedJobs(f, set, chunkSize)
 
         time.sleep(2)
-        updateOrderOnSuscribers(f.__name__, ipbroker, MANAGER_PORTNUM, AUTHKEY, conn)
+        hostname = socket.gethostname()
+        ipsocket = socket.gethostbyname(hostname)
+        updateOrderOnSuscribers(f.__name__, ipsocket, MANAGER_PORTNUM, AUTHKEY, conn)
 
         numresults = 0
         if 1:
