@@ -26,6 +26,7 @@ __version__ = "1.2"
 __email__ = "justrianaco@unal.edu.co"
 __status__ = "Development"
 
+import sys
 import stomp
 import dill as pickle
 import MultiPManager.managerImp as managerImp
