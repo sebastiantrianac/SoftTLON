@@ -51,13 +51,13 @@ AUTHKEY = ''
 tlon_resources = {}
 
 def updateResourceOnSuscribers(resource, conn):
-    msg = pickle.dumps(resource)
+    msg = pickle.dumps(resource,0)
     conn.send(destination='/topic/TLONResources', body=msg)
 
 
 def updateOrderOnSuscribers(name, ip, portnum, authkey,conn):
     tmp = {"resourceName": name, "ip": ip, "portnum": portnum, "authkey": authkey}
-    msg = pickle.dumps(tmp)
+    msg = pickle.dumps(tmp,0)
     conn.send(destination='/topic/TLONOrders', body=msg)
 
 def tlon_sharedJobs(f, set, chunkSize):

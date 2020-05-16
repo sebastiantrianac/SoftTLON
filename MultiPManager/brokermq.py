@@ -49,7 +49,10 @@ class __resourceTopicListener__(stomp.ConnectionListener):
     def on_message(self, headers, message):
         global tlon_resources
         print('Received a message {}'.format(message))
-        tmp = pickle.loads(message)
+        if sys.version_info[0]<3:
+            tmp = pickle.loads(message)
+        else:
+            tmp = pickle.loads(message.encode())
         tlon_resources[tmp.__name__] = tmp
 
 
@@ -59,7 +62,10 @@ class __ordersTopicListener__(stomp.ConnectionListener):
 
     def on_message(self, headers, message):
         global tlon_resources
-        tmp = pickle.loads(message)
+        if sys.version_info[0]<3:
+            tmp = pickle.loads(message)
+        else:
+            tmp = pickle.loads(message.encode())
         print("{},{},{}".format(tmp['ip'], tmp['portnum'], tmp['authkey']))
         print(tmp)
         if tmp['resourceName'] in tlon_resources:
