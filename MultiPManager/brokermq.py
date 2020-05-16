@@ -48,6 +48,7 @@ class __resourceTopicListener__(stomp.ConnectionListener):
 
     def on_message(self, headers, message):
         global tlon_resources
+        print('Received a message {}'.format(message))
         tmp = pickle.loads(message)
         tlon_resources[tmp.__name__] = tmp
 
