@@ -61,7 +61,7 @@ def tlon_sharedJobs(f, set, chunkSize):
     shared_job_q = manager.get_job_q()
     shared_result_q = manager.get_result_q()
     for i in range(0, len(set), chunkSize):
-        print 'Putting chunk {}:{} in queue'.format(i, i + chunkSize)
+        print('Putting chunk {}:{} in queue'.format(i, i + chunkSize))
         shared_job_q.put(set[i:i + chunkSize])
 
     return manager, shared_job_q, shared_result_q
@@ -93,12 +93,12 @@ def tlon_parallelize(ipbroker, f, set):
             for num, result in outdict.iteritems():
                 print("{}({}) = {}".format(f.__name__, num, result))
 
-        print 'End of Task'
+        print ('End of Task')
 
     except IOError as e:
-        print "I/O error({0}): {1}".format(e.errno, e.strerror)
+        print ("I/O error({0}): {1}".format(e.errno, e.strerror))
     except ValueError:
-        print "Could not convert data to an integer."
+        print ("Could not convert data to an integer.")
     finally:
         time.sleep(2)
         manager.shutdown()
