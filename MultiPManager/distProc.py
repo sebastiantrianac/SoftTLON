@@ -33,9 +33,9 @@ import sys
 import stomp
 import dill as pickle
 import time
-import MultiPManager.managerImp
-import MultiPManager.brokermq
-import MultiPManager.multiProc
+import MultiPManager.managerImp as managerImp
+import MultiPManager.brokermq as brokermq
+import MultiPManager.multiProc as multiProc
 import socket
 
 if sys.version_info[0]<3:

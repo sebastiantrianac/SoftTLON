@@ -28,8 +28,8 @@ __status__ = "Development"
 
 import stomp
 import dill as pickle
-import MultiPManager.managerImp
-import MultiPManager.multiProc
+import MultiPManager.managerImp as managerImp
+import MultiPManager.multiProc as multiProc
 
 AUTHKEY = ''
 
