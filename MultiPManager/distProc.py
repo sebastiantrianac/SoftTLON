@@ -28,15 +28,20 @@ __status__ = "Development"
 
 import multiprocessing
 from multiprocessing.managers import SyncManager
-import Queue
+
 import sys
 import stomp
 import dill as pickle
 import time
-import managerImp
-import brokermq
-import multiProc
+import MultiPManager.managerImp
+import MultiPManager.brokermq
+import MultiPManager.multiProc
 import socket
+
+if sys.version_info[0]<3:
+    import Queue
+else:
+    import queue
 
 IP = '10.203.177.194'
 MANAGER_PORTNUM = 9999

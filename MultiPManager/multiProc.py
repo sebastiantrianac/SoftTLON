@@ -27,7 +27,11 @@ __email__ = "justrianaco@unal.edu.co"
 __status__ = "Development"
 
 import multiprocessing
-import Queue
+import sys
+if sys.version_info[0]<3:
+    import Queue
+else:
+    import queue
 
 
 nprocs = 2
@@ -42,13 +46,13 @@ def tlon_threading(job_q, result_q, routine):
     while True:
         try:
             job = job_q.get_nowait()
-            print '%s got %s nums...' % (myname, len(job))
+            print('%s got %s nums...' % (myname, len(job)))
             for n in job:
                 # outdict.append(routine(n))
                 outdict[n] = routine(n)
             # outdict = {n: routine(n) for n in job}
             result_q.put(outdict)
-            print '  %s done' % myname
+            print('  %s done' % myname)
         except Queue.Empty:
             return
 

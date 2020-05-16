@@ -28,8 +28,8 @@ __status__ = "Development"
 
 import stomp
 import dill as pickle
-import managerImp
-import multiProc
+import MultiPManager.managerImp
+import MultiPManager.multiProc
 
 AUTHKEY = ''
 
@@ -60,7 +60,7 @@ class __ordersTopicListener__(stomp.ConnectionListener):
         global tlon_resources
         tmp = pickle.loads(message)
         print("{},{},{}".format(tmp['ip'], tmp['portnum'], tmp['authkey']))
-        print tmp
+        print(tmp)
         if tmp['resourceName'] in tlon_resources:
             manager = managerImp.make_client_manager(tmp['ip'], tmp['portnum'], tmp['authkey'])
             job_q = manager.get_job_q()

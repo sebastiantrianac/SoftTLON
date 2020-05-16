@@ -27,7 +27,11 @@ __email__ = "justrianaco@unal.edu.co"
 __status__ = "Development"
 
 from multiprocessing.managers import SyncManager
-import Queue
+import sys
+if sys.version_info[0]<3:
+    import Queue
+else:
+    import queue
 
 def make_server_manager(port, authkey):
     job_q = Queue.Queue()
@@ -54,5 +58,5 @@ def make_client_manager(ip, port, authkey):
     manager = ServerQueueManager(address=(ip, port), authkey=authkey)
     manager.connect()
 
-    print 'Client connected to %s:%s' % (ip, port)
+    print ('Client connected to %s:%s' % (ip, port))
     return manager
