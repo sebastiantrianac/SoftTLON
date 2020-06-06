@@ -46,7 +46,7 @@ def tlon_threading(job_q, result_q, routine):
     while True:
         try:
             job = job_q.get_nowait()
-            print('%s got %s nums...' % (myname, len(job)))
+            print('%s got %s words...' % (myname, len(job)))
             for n in job:
                 # outdict.append(routine(n))
                 outdict[n] = routine(n)
