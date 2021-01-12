@@ -50,7 +50,7 @@ class __resourceTopicListener__(stomp.ConnectionListener):
     def on_message(self, headers, message):
         global tlon_resources
         #print('Received a message {}'.format(message))
-        print('Request for resource {}'.format(message))
+        #print('Request for resource {}'.format(message))
         if sys.version_info[0]<3:
             tmp = pickle.loads(message)
         else:

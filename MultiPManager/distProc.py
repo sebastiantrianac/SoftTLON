@@ -48,6 +48,9 @@ MANAGER_PORTNUM = 9999
 BROKER_PORTNUM = 61613
 AUTHKEY = ''
 
+global numresults
+numresults=0
+
 tlon_resources = {}
 
 def updateResourceOnSuscribers(resource, conn):
@@ -87,14 +90,16 @@ def tlon_parallelize(ipbroker, f, set):
         hostname = socket.gethostname()
         ipsocket = socket.gethostbyname(hostname)
         updateOrderOnSuscribers(f.__name__, ipsocket, MANAGER_PORTNUM, AUTHKEY, conn)
-
+        global numresults
         numresults = 0
-        if 1:
-            multiProc.tlon_multiprocessing(shared_job_q, shared_result_q, f)
+        print ("numresults={0}".format(numresults))
+        #if 1:
+        #    multiProc.tlon_multiprocessing(shared_job_q, shared_result_q, f)
         while numresults < len(set):
             outdict = shared_result_q.get()
             resultdict.update(outdict)
             numresults += len(outdict)
+            updateResourceOnSuscribers(f, conn)
             for num, result in outdict.iteritems():
                 print("{}({}) = {}".format(f.__name__, num, result))
 
