@@ -49,7 +49,10 @@ def GetWords(N):
         #line_list = stripped_line.split()
         list_of_words.append(stripped_line)
     a_file.close()
-    return list_of_words[0:N]
+    set = []
+    while(len(set)<N):
+        set += (list_of_words[0:N-len(set)])
+    return set[0:N]
 
 
 class StoppableThread(threading.Thread):
@@ -64,13 +67,16 @@ class StoppableThread(threading.Thread):
 class MonitorThread(StoppableThread):
     def run(self):
         prevnumres = 0
+        t0 = int(time.time())
+        global numres
+        global dnumres
         while(not self.stopped()):
             #print man.numresults
-            global numres
-            global dnumres
-            numres.append(man.numresults)
-            dnumres.append(man.numresults-prevnumres)
-            prevnumres = man.numresults
+            t = int(time.time()) - t0
+            tmp =man.numresults
+            numres.append((t,tmp))
+            dnumres.append((t,tmp-prevnumres))
+            prevnumres = tmp
             time.sleep(1)
     
 #def GetWords(N):
@@ -88,7 +94,7 @@ if __name__ == '__main__':
         if len(sys.argv) > 1 and sys.argv[1] == 'producer':
             man.tlon_parallelize('192.168.65.1',saltedHash, GetWords(503))
         else:
-            man.runclient('192.168.0.1', int(sys.argv[2]))
+            man.runclient('192.168.1.100', int(sys.argv[2]))
         raise HaltException("")
 
     except HaltException as h:
@@ -97,23 +103,37 @@ if __name__ == '__main__':
         
 numres=[]
 dnumres=[]
+man.numresults = 0
 p = MonitorThread()
 p.start()
-man.tlon_parallelize('localhost',saltedHash, GetWords(50))
+man.tlon_parallelize('192.168.1.100',saltedHash, GetWords(100000))
 
+p.stop()
 import matplotlib.pyplot as plt
+import numpy as np
 fig, axs = plt.subplots(nrows=2, ncols=1,figsize=(8, 8),sharex=True)
 plt.setp(axs[-1], xlabel='Time (S)',ylabel='Throughput (Res)')
-axs[0].plot(numres)
+xs=[x[0] for x in numres]
+ys=[x[1] for x in numres]
+axs[0].plot(xs,ys)
 axs[0].set_title('Responses x Time')
-axs[0].set_ylim(-1000, 1000)
-axs[1].plot(dnumres)
+axs[0].set_ylim(-10, axs[0].get_ylim()[1]*1.1)
+xs=[x[0] for x in dnumres]
+ys=[x[1] for x in dnumres]
+axs[1].scatter(xs,ys)
+#axs[1].plot(dnumres,'g.')
+z = np.polyfit(xs, ys, 1)
+trend = np.poly1d(z)
+axs[1].plot(xs,trend(xs),"r--")
 axs[1].set_title('Change on Responses x Time')
-axs[1].set_ylim(-200, 200)
+axs[1].set_ylim(-10, axs[1].get_ylim()[1]*1.1)
 plt.show()
 
 plt.savefig('common_labels_text.png', dpi=300)
 
+import sys
+import MultiPManager.distProc as man
+man.runclient('192.168.1.100', 1)
 
 
 
